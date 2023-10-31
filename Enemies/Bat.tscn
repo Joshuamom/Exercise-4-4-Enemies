@@ -1,8 +1,10 @@
-[gd_scene load_steps=36 format=3 uid="uid://c3tf31w2kdtx1"]
+[gd_scene load_steps=38 format=3 uid="uid://c3tf31w2kdtx1"]
 
-[ext_resource type="Texture2D" uid="uid://b4qe04us7ia2t" path="res://Assets/bat_move.png" id="1"]
-[ext_resource type="Texture2D" uid="uid://bge2w414lirjr" path="res://Assets/bat_attack.png" id="3"]
-[ext_resource type="Texture2D" uid="uid://de3ah5l1x2cpw" path="res://Assets/bat_die.png" id="4"]
+[ext_resource type="Script" path="res://Enemies/Bat.gd" id="1_6qojc"]
+[ext_resource type="Texture2D" uid="uid://dcewymt0y2awv" path="res://Assets/bat_attack.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://dxdjqcqv3y0ii" path="res://Enemies/bat_move.png" id="3_g12qk"]
+[ext_resource type="Texture2D" uid="uid://bx3se154udbo" path="res://Assets/bat_die.png" id="4"]
+[ext_resource type="Script" path="res://Enemies/NavigationAgent2D.gd" id="4_1h72s"]
 
 [sub_resource type="AtlasTexture" id="64"]
 atlas = ExtResource("3")
@@ -85,35 +87,35 @@ atlas = ExtResource("4")
 region = Rect2(576, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="54"]
-atlas = ExtResource("1")
+atlas = ExtResource("3_g12qk")
 region = Rect2(0, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="55"]
-atlas = ExtResource("1")
+atlas = ExtResource("3_g12qk")
 region = Rect2(64, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="56"]
-atlas = ExtResource("1")
+atlas = ExtResource("3_g12qk")
 region = Rect2(128, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="57"]
-atlas = ExtResource("1")
+atlas = ExtResource("3_g12qk")
 region = Rect2(192, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="58"]
-atlas = ExtResource("1")
+atlas = ExtResource("3_g12qk")
 region = Rect2(256, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="59"]
-atlas = ExtResource("1")
+atlas = ExtResource("3_g12qk")
 region = Rect2(320, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="60"]
-atlas = ExtResource("1")
+atlas = ExtResource("3_g12qk")
 region = Rect2(384, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="61"]
-atlas = ExtResource("1")
+atlas = ExtResource("3_g12qk")
 region = Rect2(448, 0, 64, 64)
 
 [sub_resource type="SpriteFrames" id="62"]
@@ -222,18 +224,21 @@ animations = [{
 size = Vector2(120, 77)
 
 [sub_resource type="CircleShape2D" id="63"]
-radius = 72.0
+radius = 205.234
 
 [sub_resource type="RectangleShape2D" id="84"]
 size = Vector2(120, 32)
 
 [node name="Bat" type="CharacterBody2D"]
 position = Vector2(1, 4)
+script = ExtResource("1_6qojc")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(5, 5)
 sprite_frames = SubResource("62")
 animation = &"Attacking"
+frame = 9
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-5, 2.5)
@@ -257,4 +262,9 @@ one_shot = true
 position = Vector2(-5, -52)
 shape = SubResource("84")
 
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+script = ExtResource("4_1h72s")
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="body_entered" from="Attack" to="." method="_on_attack_body_entered"]
+[connection signal="body_entered" from="Above_and_Below" to="." method="_on_above_and_below_body_entered"]
